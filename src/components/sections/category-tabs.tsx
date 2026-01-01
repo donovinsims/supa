@@ -35,9 +35,9 @@ export default function CategoryTabs() {
                   onClick={() => setActiveTab(category.slug)}
                   className={cn(
                     "whitespace-nowrap text-[12px] font-medium transition-all duration-300 px-[14px] py-[7px] rounded-[8px] border shrink-0",
-                    isActive
-                      ? "bg-[#151515] border-[#1F1F1F] text-white"
-                      : "bg-transparent border-transparent text-[#999] hover:text-[#ccc]"
+                      isActive
+                        ? "bg-ui-1 dark:bg-[#151515] border-border-1 dark:border-[#1F1F1F] text-text-primary dark:text-white"
+                        : "bg-transparent border-transparent text-text-secondary hover:text-text-primary"
                   )}
                 >
                   {category.name}

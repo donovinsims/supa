@@ -91,11 +91,11 @@ const HeroSection = () => {
                             className="w-full bg-[#FCFCFC] dark:bg-[#151515] pl-5 dark:pl-11 pr-5 md:pr-[200px] py-5 text-[#050505] dark:text-[#F9F9F9] outline-none placeholder-[#666666] text-[14px] rounded-[14px] shadow-[inset_0_0_0_1px_#E8E8E8] dark:shadow-[inset_0_0_0_1px_#1F1F1F] transition-all"
                         />
                       </div>
-                      <button
-                        type="submit"
-                        disabled={status === 'loading'}
-                        className="w-full md:w-auto md:absolute md:right-[6px] md:top-[6px] md:bottom-[6px] bg-[#7B00FF] dark:bg-[#FF3D00] hover:opacity-90 text-white dark:text-white px-6 py-5 md:py-0 rounded-[14px] md:rounded-[10px] dark:md:rounded-[8px] font-semibold text-[15px] md:text-[14px] transition-all whitespace-nowrap disabled:opacity-50"
-                      >
+                        <button
+                          type="submit"
+                          disabled={status === 'loading'}
+                          className="w-full md:w-auto md:absolute md:right-[6px] md:top-[6px] md:bottom-[10px] bg-[#7B00FF] dark:bg-[#FF3D00] shadow-[0_4px_0_#5B00BD] dark:shadow-[0_4px_0_#B32B00] active:translate-y-[2px] active:shadow-[0_2px_0_#5B00BD] dark:active:shadow-[0_2px_0_#B32B00] text-white dark:text-white px-6 py-5 md:py-0 rounded-[14px] md:rounded-[10px] dark:md:rounded-[8px] font-semibold text-[15px] md:text-[14px] transition-all whitespace-nowrap disabled:opacity-50"
+                        >
                         {status === 'loading' ? 'Sending...' : (isDark ? 'Get Monthly Picks' : 'Get Our Weekly Picks')}
                       </button>
                     </form>
