@@ -1,44 +1,51 @@
 "use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Bookmark } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { Website, getRelatedWebsites } from '@/lib/data';
-import { WebsitePreviewModal } from '@/components/ui/website-preview-modal';
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Bookmark } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
+import { WebsitePreviewModal } from "@/components/ui/website-preview-modal";
+import { websites } from "@/lib/data";
 
 interface WebsiteDetailProps {
-  website: Website;
+  website: {
+    id: number;
+    slug: string;
+    title: string;
+    tagline: string;
+    description: string;
+    url: string;
+    image: string;
+    mobileImage?: string;
+    category: string;
+    framework: string;
+    cms: string;
+    featured: boolean;
+    launchDate: string;
+  };
 }
 
-const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
-  const relatedWebsites = getRelatedWebsites(website.slug, 4);
+export default function WebsiteDetail({ website }: WebsiteDetailProps) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const layoutId = `preview-${website.slug}`;
+  const layoutId = `website-preview-${website.slug}`;
+
+  const relatedWebsites = websites
+    .filter((w) => w.category === website.category && w.id !== website.id)
+    .slice(0, 4);
 
   return (
-    <div className="container pt-24 md:pt-32 pb-24">
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
-        
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
         <div className="w-full lg:w-[60%]">
-          <div className="relative">
-            <motion.div
-              layoutId={layoutId}
-              className="aspect-[1.5/1] w-full overflow-hidden rounded-[12px] md:rounded-[20px] border border-border-1 bg-ui-1 cursor-pointer"
-              onClick={() => setIsPreviewOpen(true)}
-              whileHover={{ scale: 1.01 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              <Image
-                src={website.image}
-                alt={website.title}
-                width={1200}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </motion.div>
+          <div className="relative aspect-[4/3] rounded-[16px] overflow-hidden border border-border-1 bg-ui-1">
+            <Image
+              src={website.image}
+              alt={website.title}
+              fill
+              className="object-cover"
+              priority
+            />
             
             {website.mobileImage && (
               <div className="hidden md:block absolute bottom-4 right-4 w-[140px] lg:w-[180px] aspect-[9/16] rounded-[12px] overflow-hidden border border-border-1 bg-ui-1 shadow-2xl pointer-events-none">
@@ -80,14 +87,13 @@ const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
           </div>
 
           <div className="flex flex-col gap-3 mt-6 md:mt-8">
-            <a
-              href={website.url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <motion.button
+              layoutId={layoutId}
+              onClick={() => setIsPreviewOpen(true)}
               className="w-full py-4 bg-ui-1 hover:bg-ui-2 text-text-primary text-[14px] md:text-[16px] font-medium rounded-[12px] transition-colors text-center border border-border-1"
             >
               Visit website
-            </a>
+            </motion.button>
             <button className="w-full py-4 bg-[#FF3D00] hover:bg-[#E63700] text-white text-[14px] md:text-[16px] font-semibold rounded-[12px] transition-colors flex items-center justify-center gap-2">
               <Bookmark className="w-4 h-4" />
               Bookmark
@@ -134,14 +140,9 @@ const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
         layoutId={layoutId}
-        website={{
-          title: website.title,
-          url: website.url,
-          image: website.image,
-        }}
+        websiteUrl={website.url}
+        title={website.title}
       />
     </div>
   );
-};
-
-export default WebsiteDetail;
+}

@@ -1,140 +1,116 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Bookmark, ExternalLink } from "lucide-react";
-import Image from "next/image";
-import { useEffect } from "react";
+import { RotateCw, MoreHorizontal } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
 
 interface WebsitePreviewModalProps {
   isOpen: boolean;
   onClose: () => void;
+  websiteUrl: string;
+  title: string;
   layoutId: string;
-  website: {
-    title: string;
-    url: string;
-    image: string;
-  };
 }
 
 export function WebsitePreviewModal({
   isOpen,
   onClose,
+  websiteUrl,
+  title,
   layoutId,
-  website,
 }: WebsitePreviewModalProps) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [iframeKey, setIframeKey] = useState(0);
+
+  const handleReload = useCallback(() => {
+    setIsLoading(true);
+    setIframeKey((prev) => prev + 1);
+  }, []);
+
+  const handleIframeLoad = useCallback(() => {
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     if (isOpen) {
-      window.addEventListener("keydown", handleEscape);
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
+      setIsLoading(true);
     }
-    return () => window.removeEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
   }, [isOpen, onClose]);
 
-  const handleExternalLink = () => {
-    window.parent.postMessage(
-      { type: "OPEN_EXTERNAL_URL", data: { url: website.url } },
-      "*"
-    );
-  };
+  const displayUrl = websiteUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       {isOpen && (
         <>
           <motion.div
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-md z-50"
             onClick={onClose}
           />
 
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8 lg:p-12 pointer-events-none">
+          <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center p-4 md:p-8 pointer-events-none">
             <motion.div
               layoutId={layoutId}
-              className="w-full max-w-5xl h-[80vh] max-h-[800px] bg-[#1a1a1a] rounded-[16px] overflow-hidden flex flex-col shadow-2xl pointer-events-auto border border-white/10"
+              className="relative w-full max-w-[420px] h-[85vh] max-h-[800px] bg-neutral-950 rounded-[2rem] overflow-hidden shadow-2xl shadow-black/50 pointer-events-auto border border-neutral-800/50 flex flex-col"
               transition={{
                 type: "spring",
-                stiffness: 300,
-                damping: 30,
+                stiffness: 280,
+                damping: 32,
               }}
             >
-              <div className="flex items-center justify-between px-4 py-3 bg-[#1a1a1a] border-b border-white/10">
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      onClick={onClose}
-                      className="w-3 h-3 rounded-full bg-[#FF5F57] hover:bg-[#FF5F57]/80 transition-colors"
-                    />
-                    <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-                    <div className="w-3 h-3 rounded-full bg-[#28C840]" />
+              <div className="flex-1 relative bg-neutral-900 m-2 mt-3 rounded-t-2xl overflow-hidden">
+                {isLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-neutral-900 z-10">
+                    <span className="text-neutral-500 text-sm tracking-wide">Loading preview</span>
                   </div>
-                </div>
-
-                <span className="text-[13px] font-medium text-white/60 tracking-wide">
-                  Preview
-                </span>
-
-                <div className="flex items-center gap-3">
-                  <button className="text-white/40 hover:text-white/80 transition-colors">
-                    <Bookmark className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={handleExternalLink}
-                    className="text-white/40 hover:text-white/80 transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={onClose}
-                    className="text-white/40 hover:text-white/80 transition-colors"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
+                )}
+                <iframe
+                  key={iframeKey}
+                  src={websiteUrl}
+                  title={title}
+                  className="w-full h-full border-0"
+                  onLoad={handleIframeLoad}
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                />
               </div>
 
-              <div className="px-4 py-2 bg-[#0f0f0f] border-b border-white/5">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-md max-w-md mx-auto">
-                  <div className="w-3 h-3 rounded-full bg-white/20 flex items-center justify-center">
-                    <span className="text-[8px] text-white/60">🔒</span>
-                  </div>
-                  <span className="text-[12px] text-white/50 truncate">
-                    {website.url.replace(/^https?:\/\//, "")}
+              <div className="flex items-center justify-between px-4 py-3 bg-neutral-950 m-2 mt-0 mb-3 rounded-b-2xl rounded-t-xl">
+                <div className="flex-1 flex items-center justify-center">
+                  <span className="text-neutral-300 text-sm font-medium tracking-tight truncate max-w-[180px]">
+                    {displayUrl}
                   </span>
                 </div>
-              </div>
 
-              <div className="flex-1 overflow-auto bg-[#0a0a0a]">
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2, duration: 0.3 }}
-                  className="w-full"
-                >
-                  <Image
-                    src={website.image}
-                    alt={website.title}
-                    width={1920}
-                    height={1080}
-                    className="w-full h-auto"
-                    priority
-                  />
-                </motion.div>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={handleReload}
+                    className="p-2.5 hover:bg-neutral-800 rounded-full transition-colors"
+                    aria-label="Reload"
+                  >
+                    <RotateCw className={`w-4 h-4 text-neutral-400 ${isLoading ? 'animate-spin' : ''}`} />
+                  </button>
+
+                  <button
+                    onClick={onClose}
+                    className="p-2.5 hover:bg-neutral-800 rounded-full transition-colors"
+                    aria-label="More options"
+                  >
+                    <MoreHorizontal className="w-4 h-4 text-neutral-400" />
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>
