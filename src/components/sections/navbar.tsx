@@ -17,10 +17,28 @@ const Navbar = () => {
           </Link>
             <nav className="hidden md:flex items-center gap-1 md:gap-2">
               <Link 
-                href="/" 
+                href="/software" 
                 className="text-text-primary bg-ui-1 border border-border-1 px-3 py-1.5 text-[12px] font-medium rounded-[8px] transition-all"
               >
-                Websites
+                Software
+              </Link>
+              <Link 
+                href="/guides" 
+                className="text-text-secondary hover:text-text-primary px-3 py-1.5 text-[12px] font-medium transition-colors rounded-[8px]"
+              >
+                Guides
+              </Link>
+              <Link 
+                href="/catalog" 
+                className="text-text-secondary hover:text-text-primary px-3 py-1.5 text-[12px] font-medium transition-colors rounded-[8px]"
+              >
+                Catalog
+              </Link>
+              <Link 
+                href="/learn" 
+                className="text-text-secondary hover:text-text-primary px-3 py-1.5 text-[12px] font-medium transition-colors rounded-[8px]"
+              >
+                Learn
               </Link>
               <Link 
                 href="/creators" 
@@ -28,25 +46,7 @@ const Navbar = () => {
               >
                 Creators
               </Link>
-              <Link 
-                href="/templates" 
-                className="text-text-secondary hover:text-text-primary px-3 py-1.5 text-[12px] font-medium transition-colors rounded-[8px]"
-              >
-                Templates
-              </Link>
-            <Link 
-              href="/software" 
-              className="text-text-secondary hover:text-text-primary px-3 py-1.5 text-[12px] font-medium transition-colors rounded-[8px]"
-            >
-              Software
-            </Link>
-            <Link 
-              href="/pricing" 
-              className="text-text-secondary hover:text-text-primary px-3 py-1.5 text-[12px] font-medium transition-colors rounded-[8px]"
-            >
-              Pricing
-            </Link>
-          </nav>
+            </nav>
         </div>
 
         {/* Right Side: Actions */}

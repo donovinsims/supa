@@ -3,8 +3,9 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Bookmark, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Paywall } from './paywall';
+import { BookmarkIconButton } from '@/components/ui/bookmark-icon-button';
 import { websites } from '@/lib/data';
 import { useCategory } from '@/contexts/category-context';
 
@@ -54,14 +55,12 @@ const DirectoryCard: React.FC<DirectoryCardProps> = ({ image, badge, title, cate
           <span className="text-[14px] text-text-secondary truncate">{category}</span>
         </div>
         
-        <div className="flex items-center gap-3 ml-2 shrink-0">
-          <button className="text-text-secondary hover:text-text-primary transition-colors">
-            <Bookmark className="h-[15px] w-[15px]" strokeWidth={2.5} />
-          </button>
-          <Link href={href} className="text-text-secondary hover:text-text-primary transition-colors">
-            <ArrowUpRight className="h-[16px] w-[16px]" strokeWidth={2.5} />
-          </Link>
-        </div>
+          <div className="flex items-center gap-3 ml-2 shrink-0">
+            <BookmarkIconButton />
+            <Link href={href} className="text-text-secondary hover:text-text-primary transition-colors">
+              <ArrowUpRight className="h-[16px] w-[16px]" strokeWidth={2.5} />
+            </Link>
+          </div>
       </div>
     </div>
   );

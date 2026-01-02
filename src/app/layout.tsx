@@ -4,6 +4,7 @@ import "./globals.css";
 import { VisualEditsMessenger } from "orchids-visual-edits";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { CategoryProvider } from "@/contexts/category-context";
+import { PostHogProvider } from "./providers";
 import Script from "next/script";
 
 const inter = Inter({
@@ -23,20 +24,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased`}>
-        <Script
-          id="orchids-browser-logs"
-          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts/orchids-browser-logs.js"
-          strategy="afterInteractive"
-          data-orchids-project-id="8327a454-7780-4a77-8536-042a8f12d6e5"
-        />
-<ThemeProvider>
-            <CategoryProvider>
-              {children}
-            </CategoryProvider>
-          </ThemeProvider>
-        <VisualEditsMessenger />
-      </body>
+    <body className={`${inter.variable} antialiased`}>
+      <Script
+        id="orchids-browser-logs"
+        src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts/orchids-browser-logs.js"
+        strategy="afterInteractive"
+        data-orchids-project-id="8327a454-7780-4a77-8536-042a8f12d6e5"
+      />
+      <PostHogProvider>
+        <ThemeProvider>
+          <CategoryProvider>
+            {children}
+          </CategoryProvider>
+        </ThemeProvider>
+      </PostHogProvider>
+
+      <VisualEditsMessenger />
+    </body>
     </html>
   );
 }
