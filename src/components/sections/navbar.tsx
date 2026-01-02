@@ -7,11 +7,14 @@ import { Search, Send, User as UserIcon, LogOut, Loader2 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Logo } from '@/components/ui/logo';
 import { SubmitModal } from '@/components/ui/submit-modal';
+import { AuthModal } from '@/components/ui/auth-modal';
 import { createClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
 
 const Navbar = () => {
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -158,20 +161,20 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <>
-                <Link 
-                  href="/auth/signin" 
-                  className="text-text-primary px-3 py-1.5 text-[12px] font-medium hover:text-text-primary transition-colors"
-                >
-                  Sign in
-                </Link>
-                <Link 
-                  href="/auth/signup" 
-                  className="bg-text-primary text-page px-4 py-1.5 text-[12px] font-semibold rounded-[8px] hover:opacity-90 transition-all"
-                >
-                  Create Account
-                </Link>
-              </>
+<>
+                  <button 
+                    onClick={() => { setAuthMode("signin"); setAuthModalOpen(true); }}
+                    className="text-text-primary px-3 py-1.5 text-[12px] font-medium hover:text-text-primary transition-colors"
+                  >
+                    Sign in
+                  </button>
+                  <button 
+                    onClick={() => { setAuthMode("signup"); setAuthModalOpen(true); }}
+                    className="bg-text-primary text-page px-4 py-1.5 text-[12px] font-semibold rounded-[8px] hover:opacity-90 transition-all"
+                  >
+                    Create Account
+                  </button>
+                </>
             )}
           </div>
 
@@ -182,6 +185,7 @@ const Navbar = () => {
         </div>
       </div>
       <SubmitModal open={submitModalOpen} onOpenChange={setSubmitModalOpen} />
+        <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} defaultMode={authMode} />
     </div>
   );
 };
