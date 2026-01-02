@@ -1,10 +1,12 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Bookmark } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Website, getRelatedWebsites } from '@/lib/data';
+import { WebsitePreviewModal } from '@/components/ui/website-preview-modal';
 
 interface WebsiteDetailProps {
   website: Website;
@@ -12,31 +14,34 @@ interface WebsiteDetailProps {
 
 const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
   const relatedWebsites = getRelatedWebsites(website.slug, 4);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const layoutId = `preview-${website.slug}`;
 
   return (
     <div className="container pt-24 md:pt-32 pb-24">
-      {/* Main Content - Stack on mobile, side by side on desktop */}
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
         
-        {/* Image Section - Full width on mobile */}
         <div className="w-full lg:w-[60%]">
-          {/* Desktop + Mobile Preview Combined */}
           <div className="relative">
-            {/* Main Desktop Image */}
-<div className="aspect-[1.5/1] w-full overflow-hidden rounded-[12px] md:rounded-[20px] border border-border-1 bg-ui-1">
-                <Image
-                  src={website.image}
-                  alt={website.title}
-                  width={1200}
-                  height={800}
-                  className="h-full w-full object-cover border border-border-1 rounded-[12px] md:rounded-[20px]"
-                  priority
-                />
-              </div>
+            <motion.div
+              layoutId={layoutId}
+              className="aspect-[1.5/1] w-full overflow-hidden rounded-[12px] md:rounded-[20px] border border-border-1 bg-ui-1 cursor-pointer"
+              onClick={() => setIsPreviewOpen(true)}
+              whileHover={{ scale: 1.01 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <Image
+                src={website.image}
+                alt={website.title}
+                width={1200}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </motion.div>
             
-            {/* Mobile Preview Overlay - Hidden on small screens */}
             {website.mobileImage && (
-              <div className="hidden md:block absolute bottom-4 right-4 w-[140px] lg:w-[180px] aspect-[9/16] rounded-[12px] overflow-hidden border border-border-1 bg-ui-1 shadow-2xl">
+              <div className="hidden md:block absolute bottom-4 right-4 w-[140px] lg:w-[180px] aspect-[9/16] rounded-[12px] overflow-hidden border border-border-1 bg-ui-1 shadow-2xl pointer-events-none">
                 <Image
                   src={website.mobileImage}
                   alt={`${website.title} mobile`}
@@ -49,9 +54,7 @@ const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
           </div>
         </div>
 
-        {/* Info Section */}
         <div className="w-full lg:w-[40%] flex flex-col">
-          {/* Title and Tagline */}
           <div className="mb-6 md:mb-8">
             <h1 className="text-[32px] md:text-[48px] lg:text-[56px] font-bold text-text-primary tracking-tight leading-[1.1] uppercase mb-2 md:mb-4">
               {website.title}
@@ -61,7 +64,6 @@ const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
             </p>
           </div>
 
-          {/* Metadata Table */}
           <div className="flex flex-col border-t border-border-1">
             <div className="flex items-center justify-between py-4 border-b border-border-1">
               <span className="text-[14px] text-text-secondary">Category:</span>
@@ -77,25 +79,23 @@ const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex flex-col gap-3 mt-6 md:mt-8">
-<a
-                href={website.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-4 bg-ui-1 hover:bg-ui-2 text-text-primary text-[14px] md:text-[16px] font-medium rounded-[12px] transition-colors text-center border border-border-1"
-              >
-                Visit website
-              </a>
-              <button className="w-full py-4 bg-[#FF3D00] hover:bg-[#E63700] text-white text-[14px] md:text-[16px] font-semibold rounded-[12px] transition-colors flex items-center justify-center gap-2">
-                <Bookmark className="w-4 h-4" />
-                Bookmark
-              </button>
+            <a
+              href={website.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-4 bg-ui-1 hover:bg-ui-2 text-text-primary text-[14px] md:text-[16px] font-medium rounded-[12px] transition-colors text-center border border-border-1"
+            >
+              Visit website
+            </a>
+            <button className="w-full py-4 bg-[#FF3D00] hover:bg-[#E63700] text-white text-[14px] md:text-[16px] font-semibold rounded-[12px] transition-colors flex items-center justify-center gap-2">
+              <Bookmark className="w-4 h-4" />
+              Bookmark
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Related Websites Section */}
       {relatedWebsites.length > 0 && (
         <div className="mt-16 md:mt-24 pt-12 border-t border-border-1">
           <h2 className="text-[20px] md:text-[24px] font-bold text-text-primary mb-8">
@@ -129,6 +129,17 @@ const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
           </div>
         </div>
       )}
+
+      <WebsitePreviewModal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        layoutId={layoutId}
+        website={{
+          title: website.title,
+          url: website.url,
+          image: website.image,
+        }}
+      />
     </div>
   );
 };
