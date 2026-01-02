@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink } from "lucide-react";
+import { X, Bookmark, ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface WebsitePreviewModalProps {
@@ -12,6 +12,7 @@ interface WebsitePreviewModalProps {
     title: string;
     url: string;
     image: string;
+    favicon?: string;
   };
 }
 
@@ -86,11 +87,14 @@ export function WebsitePreviewModal({
                     <div className="w-3 h-3 rounded-full bg-[#28C840]" />
                   </div>
                   <span className="text-[14px] font-medium text-white/70 ml-2">
-                    {website.title}
+                    Preview
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3">
+                  <button className="text-white/40 hover:text-white/80 transition-colors">
+                    <Bookmark className="w-4 h-4" />
+                  </button>
                   <button
                     onClick={handleExternalLink}
                     className="text-white/40 hover:text-white/80 transition-colors"

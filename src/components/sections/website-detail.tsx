@@ -21,18 +21,20 @@ const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
     <div className="container pt-24 md:pt-32 pb-24">
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
         
-          <div className="w-full lg:w-[60%]">
-            <div className="relative">
-              <div className="aspect-[1.5/1] w-full overflow-hidden rounded-[12px] md:rounded-[20px] border border-border-1 bg-ui-1">
-                <Image
-                  src={website.image}
-                  alt={website.title}
-                  width={1200}
-                  height={800}
-                  className="h-full w-full object-cover"
-                  priority
-                />
-              </div>
+        <div className="w-full lg:w-[60%]">
+          <div className="relative">
+              <motion.div
+                className="relative aspect-[16/10] rounded-2xl overflow-hidden"
+              >
+              <Image
+                src={website.image}
+                alt={website.title}
+                width={1200}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </motion.div>
             
             {website.mobileImage && (
               <div className="hidden md:block absolute bottom-4 right-4 w-[140px] lg:w-[180px] aspect-[9/16] rounded-[12px] overflow-hidden border border-border-1 bg-ui-1 shadow-2xl pointer-events-none">
@@ -81,11 +83,11 @@ const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
               >
                 Visit website
               </motion.button>
-            <button className="w-full py-4 bg-[#FF3D00] hover:bg-[#E63700] text-white text-[14px] md:text-[16px] font-semibold rounded-[12px] transition-colors flex items-center justify-center gap-2">
-              <Bookmark className="w-4 h-4" />
-              Bookmark
-            </button>
-          </div>
+              <button className="w-full py-4 bg-[#FF3D00] hover:bg-[#E63700] text-white text-[14px] md:text-[16px] font-semibold rounded-[12px] transition-colors flex items-center justify-center gap-2">
+                <Bookmark className="w-4 h-4" />
+                Bookmark
+              </button>
+            </div>
         </div>
       </div>
 
