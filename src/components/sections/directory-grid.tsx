@@ -15,9 +15,10 @@ interface DirectoryCardProps {
   title: string;
   category: string;
   href: string;
+  slug: string;
 }
 
-const DirectoryCard: React.FC<DirectoryCardProps> = ({ image, badge, title, category, href }) => {
+const DirectoryCard: React.FC<DirectoryCardProps> = ({ image, badge, title, category, href, slug }) => {
   return (
     <div className="flex flex-col">
       <Link 
@@ -49,7 +50,7 @@ const DirectoryCard: React.FC<DirectoryCardProps> = ({ image, badge, title, cate
         </div>
         
           <div className="flex items-center gap-3 ml-2 shrink-0">
-            <BookmarkIconButton />
+            <BookmarkIconButton websiteSlug={slug} />
             <Link href={href} className="text-text-secondary hover:text-text-primary transition-colors">
               <ArrowUpRight className="h-[16px] w-[16px]" strokeWidth={2.5} />
             </Link>
@@ -72,6 +73,7 @@ const DirectoryGrid: React.FC = () => {
     title: website.title,
     category: website.category,
     href: `/website/${website.slug}`,
+    slug: website.slug,
   }));
 
   return (

@@ -53,19 +53,19 @@ const Navbar = () => {
                 Software
               </Link>
               <Link 
-                href="/guides" 
+                href="/" 
                 className="text-text-secondary hover:text-text-primary px-3 py-1.5 text-[12px] font-medium transition-colors rounded-[8px]"
               >
                 Guides
               </Link>
               <Link 
-                href="/catalog" 
+                href="/" 
                 className="text-text-secondary hover:text-text-primary px-3 py-1.5 text-[12px] font-medium transition-colors rounded-[8px]"
               >
                 Catalog
               </Link>
               <Link 
-                href="/learn" 
+                href="/" 
                 className="text-text-secondary hover:text-text-primary px-3 py-1.5 text-[12px] font-medium transition-colors rounded-[8px]"
               >
                 Learn
