@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Bookmark } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Website, getRelatedWebsites } from '@/lib/data';
 import { WebsitePreviewModal } from '@/components/ui/website-preview-modal';
+import { BookmarkButton } from '@/components/ui/bookmark-button';
 
 interface WebsiteDetailProps {
   website: Website;
@@ -75,19 +75,16 @@ const WebsiteDetail: React.FC<WebsiteDetailProps> = ({ website }) => {
             </div>
           </div>
 
-            <div className="flex flex-col gap-3 mt-6 md:mt-8">
-              <motion.button
-                layoutId={layoutId}
-                onClick={() => setIsPreviewOpen(true)}
-                className="w-full py-4 bg-ui-1 hover:bg-ui-2 text-text-primary text-[14px] md:text-[16px] font-medium rounded-[12px] transition-colors text-center border border-border-1"
-              >
-                Visit website
-              </motion.button>
-              <button className="w-full py-4 bg-[#FF3D00] hover:bg-[#E63700] text-white text-[14px] md:text-[16px] font-semibold rounded-[12px] transition-colors flex items-center justify-center gap-2">
-                <Bookmark className="w-4 h-4" />
-                Bookmark
-              </button>
-            </div>
+              <div className="flex flex-col gap-3 mt-6 md:mt-8">
+                <motion.button
+                  layoutId={layoutId}
+                  onClick={() => setIsPreviewOpen(true)}
+                  className="w-full py-4 bg-ui-1 hover:bg-ui-2 text-text-primary text-[14px] md:text-[16px] font-medium rounded-[12px] transition-colors text-center border border-border-1"
+                >
+                  Visit website
+                </motion.button>
+                <BookmarkButton websiteSlug={website.slug} />
+              </div>
         </div>
       </div>
 
