@@ -216,20 +216,20 @@ export function AuthModal({ open, onOpenChange, defaultMode = "signin" }: AuthMo
                     </motion.div>
                   )}
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-text-primary text-page py-4 rounded-[12px] font-semibold text-[14px] hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    {loading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        {mode === "signin" ? "Signing in..." : "Creating account..."}
-                      </>
-                    ) : (
-                      mode === "signin" ? "Sign in" : "Create account"
-                    )}
-                  </button>
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-[#FF3D00] shadow-[0_4px_0_#B32B00] active:translate-y-[2px] active:shadow-[0_2px_0_#B32B00] text-white py-4 rounded-[12px] font-semibold text-[14px] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          {mode === "signin" ? "Signing in..." : "Creating account..."}
+                        </>
+                      ) : (
+                        mode === "signin" ? "Sign in" : "Create account"
+                      )}
+                    </button>
                 </form>
 
                 <div className="mt-6 text-center">
