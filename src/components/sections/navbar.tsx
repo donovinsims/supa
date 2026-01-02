@@ -1,12 +1,15 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Search, Send } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Logo } from '@/components/ui/logo';
+import { SubmitModal } from '@/components/ui/submit-modal';
 
 const Navbar = () => {
+  const [submitModalOpen, setSubmitModalOpen] = useState(false);
+
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] w-full bg-page/80 backdrop-blur-md transition-theme">
       <div className="container h-[56px] flex items-center justify-between">
@@ -58,14 +61,14 @@ const Navbar = () => {
             <ThemeToggle />
           </div>
 
-          <div className="hidden sm:flex items-center gap-2">
-            <Link 
-              href="/submit" 
-              className="flex items-center gap-1.5 text-text-primary bg-ui-1 border border-border-1 px-3 py-1.5 text-[12px] font-medium rounded-[8px] hover:bg-ui-2 transition-all"
-            >
-              <Send className="w-3.5 h-3.5" />
-              Submit
-            </Link>
+<div className="hidden sm:flex items-center gap-2">
+              <button 
+                onClick={() => setSubmitModalOpen(true)}
+                className="flex items-center gap-1.5 text-text-primary bg-ui-1 border border-border-1 px-3 py-1.5 text-[12px] font-medium rounded-[8px] hover:bg-ui-2 transition-all"
+              >
+                <Send className="w-3.5 h-3.5" />
+                Submit
+              </button>
             <Link 
               href="/login" 
               className="text-text-primary px-3 py-1.5 text-[12px] font-medium hover:text-text-primary transition-colors"
@@ -87,6 +90,7 @@ const Navbar = () => {
           </button>
         </div>
       </div>
+      <SubmitModal open={submitModalOpen} onOpenChange={setSubmitModalOpen} />
     </div>
   );
 };

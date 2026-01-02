@@ -25,14 +25,7 @@ const DirectoryCard: React.FC<DirectoryCardProps> = ({ image, badge, title, cate
         className="group relative block overflow-hidden rounded-[8px] transition-all duration-300"
       >
         <div className="aspect-[1.5/1] w-full overflow-hidden rounded-[8px] border border-border-1 bg-ui-1">
-          <Image
-            src={image}
-            alt={title}
-            width={800}
-            height={533}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-          />
-        </div>
+          </div>
       
           {badge && (
             <div className="absolute top-3 right-3 z-10">
